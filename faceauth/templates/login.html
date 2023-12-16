@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+{% csrf_token %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+    <p></p>
+    <span>{{ request.GET }}</span>
+    Login: <input name="login" />
+    <button>submit</button>
+    <script>
+        document.querySelector('button').addEventListener('click', async () => {
+            const csrftoken = Object.fromEntries(
+                document.cookie.split(';').map((cookie) => cookie.split("="))
+            )["csrftoken"]
+            const response = await fetch("http://127.0.0.1:8000/login/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({
+                    login: document.querySelector('input[name=login]').value
+                })
+            });
+            const data = await response.json();
+            document.querySelector('p').appendChild(document.createTextNode(data.message))
+        })
+    </script>
+</body>
+</html>
