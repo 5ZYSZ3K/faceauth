@@ -22,3 +22,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("video/", VideoView.as_view())
 ]
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
