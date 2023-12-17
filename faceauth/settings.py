@@ -55,9 +55,7 @@ ROOT_URLCONF = "faceauth.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "faceauth" / "templates"
-        ],
+        "DIRS": [BASE_DIR / 'faceauth' / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
