@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faceauth</title>
+</head>
+<body>
+
+    <header>
+        <h1>Faceauth - Create new user</h1>
+    </header>
+
+    <form id="addUser"action="/login" method="post">
+        <label for="new_username">Login:</label>
+        <input type="text" id="new_username" name="new_username" required>
+
+        <label for="new_password">Password:</label>
+        <input type="password" id="new_password" name="new_password" required>
+
+        <button type="submit">Create</button>
+      </form>
+      <div id="response"></div>
+      <script>
+        document.getElementById('addUser').addEventListener('submit', async () => {
+            const newData = new newData(document.getElementById('addUser'));
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    body: newData
+                });
+                const data = await response.json();
+                document.getElementById('response').innerText = data.message;
+            } catch (error) {
+                document.getElementById('response').innerText = "Something went wrong.";
+            }
+        });
+      </script>
+</body>
+</html>

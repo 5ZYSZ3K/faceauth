@@ -20,6 +20,8 @@ from faceauth.view import VideoView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("login/", FaceAuthView.as_view()),
+    path('create_user/', CreateUserView.as_view()),
     path("video/", VideoView.as_view())
 ]
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
