@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from faceauth.view import VideoView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("video/", VideoView.as_view())
 ]
