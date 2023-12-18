@@ -1,6 +1,7 @@
 import io
 import json
 
+from django.contrib.auth import authenticate, login
 from django.core.files import File
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
@@ -33,7 +34,14 @@ class VideoView(View):
 class LoginView(View):
     def post(self, request):
         user_data = json.loads(request.body)
-        pass
+        user = authenticate(username=user_data['login'], password=user_data['password'] )
+        if user is not None:
+            login(request, user)
+            return JsonResponse(
+                {'message': 'user successfully logged in'}
+            )
+        else:
+            return HttpResponse('Unauthorized - wrong password or no user', status=401)
 
     def get(self, request):
         return render(request, "login.html")
@@ -42,9 +50,12 @@ class LoginView(View):
 class CreateUserView(View):
     def post(self, request):
         user_data = json.loads(request.body)
-
         try:
-            User.objects.create_user(username=user_data['login'], password=user_data['password'])
+            user = User.objects.create_user(username=user_data['login'], password=user_data['password'])
+            login(request, user)
+            return JsonResponse(
+                {'message': 'user successfully registered'}
+            )
         except:
             return HttpResponse('Unauthorized - login already exists', status=401)
 

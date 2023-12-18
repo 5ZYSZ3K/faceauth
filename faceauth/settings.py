@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "faceauth"
+    "rest_framework.authtoken",
+    "faceauth",
 ]
 
 MIDDLEWARE = [
