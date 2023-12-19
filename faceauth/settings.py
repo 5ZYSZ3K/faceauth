@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "faceauth"
+    "rest_framework.authtoken",
+    "faceauth",
 ]
 
 MIDDLEWARE = [
@@ -55,9 +56,7 @@ ROOT_URLCONF = "faceauth.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "faceauth" / "templates"
-        ],
+        "DIRS": [BASE_DIR / 'faceauth' / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
