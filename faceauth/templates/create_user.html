@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faceauth</title>
+</head>
+<body>
+
+    <header>
+        <h1>Faceauth - Create new user</h1>
+    </header>
+    <p></p>
+
+    <form id="addUser" method="post">
+        <label for="new_username">Login:</label>
+        <input type="text" id="new_username" name="new_username" required>
+
+        <label for="new_password">Password:</label>
+        <input type="password" id="new_password" name="new_password" required>
+        <label for="new_password_repeat">Repeat password:</label>
+        <input type="password" id="new_password_repeat" name="new_password_repeat" required>
+
+        <button type="submit">Create</button>
+    </form>
+    <div id="response"></div>
+    <script>
+        document.querySelector('button').addEventListener('click', async (e) => {
+            e.preventDefault()
+            const login = document.querySelector('#new_username').value;
+            const password = document.querySelector('#new_password').value;
+            const repeatPassword = document.querySelector('#new_password_repeat').value;
+
+            if (password !== repeatPassword){
+                document.querySelector('p').appendChild(document.createTextNode("Hasła nie są identyczne!"));
+                return;
+            }
+
+            const csrftoken = Object.fromEntries(
+               document.cookie.split(';').map((cookie) => cookie.split("="))
+            )["csrftoken"]
+            try {
+                 const response = await fetch("http://127.0.0.1:8000/create_user/", {
+                      method: "POST",
+                      headers: {
+                          "X-CSRFToken": csrftoken
+                      },
+                      body: JSON.stringify({login, password})
+                });
+                 const data = await response.json();
+                 document.querySelector('p').appendChild(document.createTextNode(data.message))
+            }
+            catch (e) {
+               document.querySelector('p').appendChild(document.createTextNode("Nie ma takiego użytkownika"))
+            }
+        })
+    </script>
+</body>
+</html>

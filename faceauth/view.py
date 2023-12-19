@@ -1,14 +1,10 @@
 import io
-import json
-import uuid
 
-from django.contrib.auth import login
 from django.core.files import File
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
-from psycopg2 import IntegrityError
-from rest_framework.authtoken.admin import User
+import uuid
 from rest_framework.permissions import IsAuthenticated
 
 from faceauth.models import FacePhoto
@@ -31,31 +27,11 @@ class VideoView(View):
         return render(request, "video.html")
 
 
-class FaceAuthView(View):
-    def post(self, request):
-        data = json.loads(request.body)
-        print(data)
-        try:
-            user = User.objects.create_user(username=data['login'], password=data["password"])
-        except IntegrityError:
-            return HttpResponse('Unauthorized', status=401)
-        login(request, user)
-
-        return JsonResponse(
-            {"message": "Hello {}".format(user.username)}
-        )
-
+class LoginView(View):
     def get(self, request):
         return render(request, "login.html")
 
-class CreateUserView(View):
-    def post(self, request):
-        new_username = request.POST.get('new_username')
-        new_password = request.POST.get('new_password')
 
-        try:
-            user = User.objects.create_user(new_username=new_username, new_password=new_password)
-            message = f"User {user.new_username} created successfully!"
-            return JsonResponse({"message": message})
-        except Exception as e:
-            return JsonResponse({"message": str(e)}, status=400)
+class CreateUserView(View):
+    def get(self, request):
+        return render(request, "create_user.html")

@@ -30,7 +30,6 @@
             navigator.mediaDevices
               .getUserMedia({ video: true, audio: false })
               .then((stream) => {
-              console.log(stream);
                 video.srcObject = stream;
                 video.play();
               })
@@ -43,7 +42,7 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-            blob = canvas.toBlob(async (blob) => {
+            canvas.toBlob(async (blob) => {
                 const response = await fetch("http://127.0.0.1:8000/video/", {
                     method: "POST",
                     headers: {
