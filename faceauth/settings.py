@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-43r9xq@xuope76i7-+t24^@cnq50ox1ox1jh9spkrplo81fz3x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -54,7 +54,9 @@ ROOT_URLCONF = "faceauth.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "faceauth" / "templates"
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
