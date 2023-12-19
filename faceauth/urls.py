@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from faceauth.view import VideoView
+from faceauth.view import LoginView, CreateUserView, VideoView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("login/", LoginView.as_view()),
+    path('create_user/', CreateUserView.as_view()),
     path("video/", VideoView.as_view())
 ]

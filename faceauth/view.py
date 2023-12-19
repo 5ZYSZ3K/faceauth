@@ -1,10 +1,10 @@
 import io
-import uuid
 
 from django.core.files import File
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
+import uuid
 from rest_framework.permissions import IsAuthenticated
 
 from faceauth.models import FacePhoto
@@ -25,3 +25,13 @@ class VideoView(View):
 
     def get(self, request):
         return render(request, "video.html")
+
+
+class LoginView(View):
+    def get(self, request):
+        return render(request, "login.html")
+
+
+class CreateUserView(View):
+    def get(self, request):
+        return render(request, "create_user.html")
