@@ -1,14 +1,26 @@
+import io
+import uuid
+
+from django.core.files import File
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
+from rest_framework.permissions import IsAuthenticated
+
+from faceauth.models import FacePhoto
 
 
 class VideoView(View):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        print(request.body)
-        print(hash(request.body))
+        face_photo_instance = FacePhoto(embedding=[hash(request.body)], user=request.user)
+        file_name = f"{str(uuid.uuid4())}.jpg"
+        with io.BytesIO(request.body) as stream:
+            django_file = File(stream)
+            face_photo_instance.image.save(file_name, django_file)
         return JsonResponse(
-            {"message": "Hello XD"}
+            {"message": "Successful!"}
         )
 
     def get(self, request):
