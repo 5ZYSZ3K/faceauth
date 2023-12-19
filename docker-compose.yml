@@ -1,0 +1,49 @@
+version: '3.8'
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.20.0/24
+
+x-extra_hosts: &extra_hosts
+  extra_hosts:
+    - "db:192.168.20.4"
+    - "backend:192.168.20.5"
+
+services:
+  db:
+    <<: *extra_hosts
+    restart: always
+    image: ankane/pgvector
+    container_name: db
+    env_file:
+      - .env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      default:
+        ipv4_address: 192.168.20.4
+
+  backend:
+    <<: *extra_hosts
+    restart: always
+    image: faceauth:latest
+    build:
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    command: start-backend
+    networks:
+      default:
+        ipv4_address: 192.168.20.5
+
+volumes:
+  db-data:
