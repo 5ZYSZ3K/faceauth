@@ -38,4 +38,4 @@ RUN pip install -r /app/requirements.txt
 # Use user "wagtail" to run the build commands below and the server itself.
 USER faceauth
 
-ENTRYPOINT ["/app/entrypoint/entrypoint.sh"]
+ENTRYPOINT ["bash", "/app/entrypoint/entrypoint.sh"]
