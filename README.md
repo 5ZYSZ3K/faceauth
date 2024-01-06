@@ -14,6 +14,11 @@ It consists of following parts:
 3. Install requirements: `pip install -r requirements.txt`
 4. Migrate the database: `python manage.py migrate`
 5. Start the project: `python manage.py runserver 0.0.0.0:8000`
+6. To run od Windows config your git first. Run:
+   git config --local core.autocrlf false
+   
+
+
 
 ## Contributing and project management
 
