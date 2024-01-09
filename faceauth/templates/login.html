@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-{% csrf_token %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faceauth</title>
+    <link rel="stylesheet" href="login_style.css">
 </head>
 <body>
 
     <header>
-        <h1>Faceauth</h1>
+        <h1 id="title">Faceauth.</h1>
     </header>
 
     <form action="/login" method="post">
-        <label for="username">Login:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Login</button>
-
-        <p>New here? Create an account.</p>
-        <a href="/create_user/"><button type="button">Register</button></a>
+        <div id="login">
+          <div>
+            <label for="username">Login:</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button id="login_button" type="submit">Login</button>
+        </div>
+        <div id="register">
+          <p>New here? Create an account. -> </p>
+          <a href="/create_user/"><button id="create_account_button" type="button">Register</button></a>
+        </div>
     </form>
       <script>
       document.querySelector('button').addEventListener('click', async (event) => {
