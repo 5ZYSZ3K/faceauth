@@ -1,31 +1,52 @@
 import io
 import json
 
+from PIL import Image
 from django.contrib.auth import authenticate, login
 from django.core.files import File
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views import View
 import uuid
 
+from facenet_pytorch.models.inception_resnet_v1 import InceptionResnetV1
+from facenet_pytorch.models.mtcnn import MTCNN
+from pgvector.django import L2Distance
 from rest_framework.authtoken.admin import User
 from rest_framework.permissions import IsAuthenticated
 
 from faceauth.models import FacePhoto
 
 
+mtcnn = MTCNN(image_size=160, margin=30)
+resnet = InceptionResnetV1(pretrained='vggface2').eval()
+
+
 class VideoView(View):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        face_photo_instance = FacePhoto(embedding=[hash(request.body)], user=request.user)
-        file_name = f"{str(uuid.uuid4())}.jpg"
         with io.BytesIO(request.body) as stream:
+            if stream is None:
+                return HttpResponseBadRequest("Incorrect data!")
+            file_name_core = str(uuid.uuid4())
             django_file = File(stream)
-            face_photo_instance.image.save(file_name, django_file)
-        return JsonResponse(
-            {"message": "Successful!"}
-        )
+            image = Image.open(stream).convert('RGB')
+            img_cropped = mtcnn(image, save_path=f"./static/{file_name_core}-processed.jpg")
+            if img_cropped is None:
+                return HttpResponseBadRequest("No face detected!")
+            img_embedding = resnet(img_cropped.unsqueeze(0))
+            nearest_neighbours = FacePhoto.objects\
+                .alias(distance=L2Distance('embedding', img_embedding[0]))\
+                .filter(distance__lt=0.5)
+            if len(nearest_neighbours) > 0:
+                face_photo_instance = FacePhoto(embedding=img_embedding[0], user=request.user)
+                face_photo_instance.image.save(f"{file_name_core}.jpg", django_file)
+                return JsonResponse(
+                    {"message": "Successful!"}
+                )
+            else:
+                return HttpResponseBadRequest("Could not match the face!")
 
     def get(self, request):
         return render(request, "video.html")

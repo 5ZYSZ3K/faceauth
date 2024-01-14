@@ -5,5 +5,5 @@ Pillow
 djangorestframework
 torch
 torchvision
-matplotlib
 numpy
+facenet-pytorch
