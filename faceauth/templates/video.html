@@ -2,36 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Faceauth</title>
+    <link rel="stylesheet" href="video_style.css">
+    <script src="https://kit.fontawesome.com/43391af0ce.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="camera">
-      <video id="video">Video stream not available.</video>
-      <button id="startbutton">Staer stream</button>
-      <button id="capture">Capture</button>
-    </div>
-    <canvas id="canvas"> </canvas>
-    <div class="output">
-      <img id="photo" alt="The screen capture will appear in this box." />
+  <a href="/login/"><button type="button" id="go_back_button" class="fa-solid fa-arrow-left"></button></a>
+  <header>
+      <h1 id="title">Faceauth.</h1>
+      <h5 id="instruction"> Click below to record your face.</h5>
+  </header>
+    <div class="frame">
+      <div class="camera">
+        <video id="video">Video stream not available.</video>
+        <button id="startbutton">Start recording</button>
+        <button id="capture">Capture</button>
+      </div>
+      <canvas id="canvas"> </canvas>
+      <div class="output" style="display: none;">
+        <img id="photo" scr=" " alt="The screen capture will appear in this box." style="display: none;"/>
+        <button id="retry" style="display: none;">Retry</button>
+      </div>
     </div>
     <script>
+        const instruction = document.getElementById('instruction');
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const photo = document.getElementById('photo');
         const startbutton = document.getElementById('startbutton');
         const capturebutton = document.getElementById('capture');
+        const retrybutton = document.getElementById('retry');
+        const outputDiv = document.querySelector('.output');
+        const cameraDiv = document.querySelector('.camera');
+        const frameDiv = document.querySelector('.frame');
         const csrftoken = Object.fromEntries(
             document.cookie.split(';').map((cookie) => cookie.split("="))
         )["csrftoken"]
 
         startbutton.addEventListener('click', startup);
         capturebutton.addEventListener('click', capture);
+        retrybutton.addEventListener('click', retryCapture);
+
         function startup() {
+            startbutton.style.display = 'none';
+            instruction.style.display = 'none';
+            canvas.style.position = 'absolute';
             navigator.mediaDevices
               .getUserMedia({ video: true, audio: false })
               .then((stream) => {
                 video.srcObject = stream;
                 video.play();
+                capturebutton.style.display = 'inline-block';
+                exitbutton.style.display = 'inline-block';
               })
               .catch((err) => {
                 console.error(`An error occurred: ${err}`);
@@ -52,7 +74,25 @@
                 })
                 console.log(response.json)
             })
+
+            video.srcObject.getTracks().forEach(track => track.stop());
+            cameraDiv.style.display = 'none';
+            outputDiv.style.display = 'block';
+            photo.src = canvas.toDataURL();
+            capturebutton.style.display = 'none';
+            retrybutton.style.display = 'inline-block';
         }
+
+        function retryCapture() {
+            outputDiv.style.display = 'none';
+            cameraDiv.style.display = 'block';
+            retrybutton.style.display = 'none';
+            capturebutton.style.display = 'inline-block';
+            photo.src = '';
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            startup();
+        }
+
     </script>
 </body>
 </html>

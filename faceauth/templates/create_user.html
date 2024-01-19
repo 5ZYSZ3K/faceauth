@@ -4,24 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faceauth</title>
+    <link rel="stylesheet" href="create_user_style.css">
+      <script src="https://kit.fontawesome.com/43391af0ce.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
     <header>
-        <h1>Faceauth - Create new user</h1>
+        <h1>Faceauth.</h1>
+        <h2>Create new user</h2>
     </header>
     <p></p>
 
     <form id="addUser" method="post">
-        <label for="new_username">Login:</label>
-        <input type="text" id="new_username" name="new_username" required>
+        <a href="/login/"><button type="button" id="go_back_button" class="fa-solid fa-arrow-left" title="Go back"></button></a>
+        <div id="create_section">
+          <label for="new_username">Login:</label>
+          <input type="text" id="new_username" name="new_username" required>
 
-        <label for="new_password">Password:</label>
-        <input type="password" id="new_password" name="new_password" required>
-        <label for="new_password_repeat">Repeat password:</label>
-        <input type="password" id="new_password_repeat" name="new_password_repeat" required>
+          <label for="new_password">Password:</label>
+          <input type="password" id="new_password" name="new_password" required>
+          <label for="new_password_repeat">Repeat password:</label>
+          <input type="password" id="new_password_repeat" name="new_password_repeat" required>
 
-        <button type="submit">Create</button>
+          <button type="submit" id="create_button">Create</button>
+        </div>
     </form>
     <div id="response"></div>
     <script>
