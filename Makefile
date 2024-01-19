@@ -8,7 +8,7 @@ bootstrap: down removevolumes
 down:
 	docker compose down --remove-orphans
 removevolumes: down
-	-docker volume rm `docker volume ls -f name=faceauth -q|grep -v "pycharm"`
+	docker volume rm `docker volume ls -f name=faceauth -q|grep -v "pycharm"`
 bash:
 	docker compose exec backend bash
 bash_root:

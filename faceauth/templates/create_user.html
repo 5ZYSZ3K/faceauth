@@ -1,11 +1,14 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faceauth</title>
-    <link rel="stylesheet" href="create_user_style.css">
-      <script src="https://kit.fontawesome.com/43391af0ce.js" crossorigin="anonymous"></script>
+    {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href={% static "create_user_style.css" %}>
+    {% endblock %}
 </head>
 <body>
 
@@ -29,6 +32,7 @@
           <button type="submit" id="create_button">Create</button>
         </div>
     </form>
+    <a href="/video/"><button type="button">Login with face recognition</button></a>
     <div id="response"></div>
     <script>
         document.querySelector('button').addEventListener('click', async (e) => {
@@ -54,7 +58,9 @@
                       body: JSON.stringify({login, password})
                 });
                  const data = await response.json();
-                 document.querySelector('p').appendChild(document.createTextNode(data.message))
+                 if (data.status === 200) {
+                     navigation.navigate("/");
+                 }
             }
             catch (e) {
                document.querySelector('p').appendChild(document.createTextNode("Nie ma takiego użytkownika"))

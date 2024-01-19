@@ -3,3 +3,7 @@ psycopg2==2.9.9
 pgvector
 Pillow
 djangorestframework
+torch
+torchvision
+numpy
+facenet-pytorch

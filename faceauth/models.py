@@ -6,4 +6,4 @@ from pgvector.django import VectorField
 class FacePhoto(models.Model):
     image = models.ImageField(upload_to="static/")
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    embedding = VectorField(dimensions=1)
+    embedding = VectorField(dimensions=512)
