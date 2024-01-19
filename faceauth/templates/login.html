@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 {% csrf_token %}
@@ -5,7 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faceauth</title>
-    <link rel="stylesheet" href="login_style.css">
+    {% block extra_css %}
+        <link rel="stylesheet" type="text/css" href={% static "login_style.css" %}>
+    {% endblock %}
 </head>
 <body>
 
@@ -28,6 +32,10 @@
         <div id="register">
           <p>New here? Create an account. -> </p>
           <a href="/create_user/"><button id="create_account_button" type="button">Register</button></a>
+        </div>
+        <div id="register">
+          <p>Want to log in with face recognition? -> </p>
+          <a href="/video/"><button id="create_account_button" type="button">Login</button></a>
         </div>
     </form>
       <script>

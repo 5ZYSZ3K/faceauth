@@ -1,14 +1,15 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Faceauth</title>
-    <link rel="stylesheet" href="video_style.css">
-    <script src="https://kit.fontawesome.com/43391af0ce.js" crossorigin="anonymous"></script>
+    {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href={% static "video_style.css" %} />
+    {% endblock %}
 </head>
 <body>
-  <label for="login">Login: </label>
-  <input name="login" id="login" placeholder="login" />
   <a href="/login/"><button type="button" id="go_back_button" class="fa-solid fa-arrow-left"></button></a>
   <header>
       <h1 id="title">Faceauth.</h1>
@@ -16,14 +17,17 @@
   </header>
     <div class="frame">
       <div class="camera">
-        <video id="video">Video stream not available.</video>
+        <div class="input-prompt">
+          <label for="login">Login:</label>
+          <input type="text" id="login" name="login" />
+        </div>
         <button id="startbutton">Start recording</button>
         <button id="capture">Capture</button>
+        <canvas id="canvas"> </canvas>
       </div>
-      <canvas id="canvas"> </canvas>
       <div class="output" style="display: none;">
-        <img id="photo" scr=" " alt="The screen capture will appear in this box." style="display: none;"/>
-        <button id="retry" style="display: none;">Retry</button>
+        <img id="photo" src=" " alt="The screen capture will appear in this box." />
+        <button id="retry">Retry</button>
       </div>
     </div>
     <script>
@@ -85,7 +89,7 @@
 
             video.srcObject.getTracks().forEach(track => track.stop());
             cameraDiv.style.display = 'none';
-            outputDiv.style.display = 'block';
+            outputDiv.style.display = 'flex';
             photo.src = canvas.toDataURL();
             capturebutton.style.display = 'none';
             retrybutton.style.display = 'inline-block';
@@ -93,7 +97,7 @@
 
         function retryCapture() {
             outputDiv.style.display = 'none';
-            cameraDiv.style.display = 'block';
+            cameraDiv.style.display = 'flex';
             retrybutton.style.display = 'none';
             capturebutton.style.display = 'inline-block';
             photo.src = '';

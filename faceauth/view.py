@@ -1,6 +1,7 @@
 import io
 import json
 
+import torch
 from PIL import Image
 from django.contrib.auth import authenticate, login
 from django.core.files import File
@@ -21,6 +22,8 @@ from faceauth.models import FacePhoto
 
 mtcnn = MTCNN(image_size=160, margin=20)
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
+
+torch.save(resnet.state_dict(), "./model")
 
 
 class LoginVideoView(View):

@@ -1,11 +1,14 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faceauth</title>
-    <link rel="stylesheet" href="create_user_style.css">
-      <script src="https://kit.fontawesome.com/43391af0ce.js" crossorigin="anonymous"></script>
+    {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href={% static "create_user_style.css" %}>
+    {% endblock %}
 </head>
 <body>
 
