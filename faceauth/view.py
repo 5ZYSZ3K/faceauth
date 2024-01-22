@@ -23,7 +23,7 @@ from faceauth.models import FacePhoto
 mtcnn = MTCNN(image_size=160, margin=20)
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
-torch.save(resnet.state_dict(), "./model")
+torch.save(resnet.state_dict(), "./vggface2.pth")
 
 
 class LoginVideoView(View):
