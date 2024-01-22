@@ -6,13 +6,12 @@ from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import datasets, transforms
 import numpy as np
-import os
 
-data_dir = './static/dataset'
+data_dir = '../static/dataset'
 
-batch_size = 32
-epochs = 8
-workers = 8
+batch_size = 24
+epochs = 24
+workers = 24
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print('Running on device: {}'.format(device))
@@ -45,7 +44,6 @@ del mtcnn
 
 resnet = InceptionResnetV1(
     classify=True,
-    pretrained='vggface2',
     num_classes=len(dataset.class_to_idx)
 ).to(device)
 
@@ -113,4 +111,5 @@ for epoch in range(epochs):
         writer=writer
     )
 
+torch.save(resnet.state_dict(), '../models/own_data.pth')
 writer.close()

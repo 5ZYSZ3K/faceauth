@@ -35,7 +35,7 @@
     <a href="/video/"><button type="button">Login with face recognition</button></a>
     <div id="response"></div>
     <script>
-        document.querySelector('button').addEventListener('click', async (e) => {
+        document.querySelector('form').addEventListener('submit', async (e) => {
             e.preventDefault()
             const login = document.querySelector('#new_username').value;
             const password = document.querySelector('#new_password').value;
@@ -49,6 +49,7 @@
             const csrftoken = Object.fromEntries(
                document.cookie.split(';').map((cookie) => cookie.split("="))
             )["csrftoken"]
+            console.log(csrftoken)
             try {
                  const response = await fetch("http://127.0.0.1:8000/create_user/", {
                       method: "POST",
@@ -59,7 +60,8 @@
                 });
                  const data = await response.json();
                  if (data.status === 200) {
-                     navigation.navigate("/");
+                 console.log('here')
+                     window.location.assign("/");
                  }
             }
             catch (e) {

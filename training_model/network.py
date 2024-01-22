@@ -307,9 +307,10 @@ class InceptionResnetV1(nn.Module):
             tmp_classes = 8631
         elif pretrained == 'casia-webface':
             tmp_classes = 10575
+        elif isinstance(pretrained, str):
+            tmp_classes = 7
         elif pretrained is None and self.classify and self.num_classes is None:
             raise Exception('If "pretrained" is not specified and "classify" is True, "num_classes" must be specified')
-
 
         # Define layers
         self.conv2d_1a = BasicConv2d(3, 32, kernel_size=3, stride=2)
@@ -412,6 +413,13 @@ def load_weights(mdl, name):
         path = 'https://github.com/timesler/facenet-pytorch/releases/download/v2.2.9/20180402-114759-vggface2.pt'
     elif name == 'casia-webface':
         path = 'https://github.com/timesler/facenet-pytorch/releases/download/v2.2.9/20180408-102900-casia-webface.pt'
+    elif os.path.exists(name):
+        if torch.cuda.is_available():
+            state_dict = torch.load(name)
+        else:
+            state_dict = torch.load(name, map_location=torch.device('cpu'))
+        mdl.load_state_dict(state_dict)
+        return
     else:
         raise ValueError('Pretrained models only exist for "vggface2" and "casia-webface"')
 
@@ -422,5 +430,8 @@ def load_weights(mdl, name):
     if not os.path.exists(cached_file):
         download_url_to_file(path, cached_file)
 
-    state_dict = torch.load(cached_file)
+    if torch.cuda.is_available():
+        state_dict = torch.load(cached_file)
+    else:
+        state_dict = torch.load(cached_file, map_location=torch.device('cpu'))
     mdl.load_state_dict(state_dict)
