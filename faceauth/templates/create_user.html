@@ -49,7 +49,6 @@
             const csrftoken = Object.fromEntries(
                document.cookie.split(';').map((cookie) => cookie.split("="))
             )["csrftoken"]
-            console.log(csrftoken)
             try {
                  const response = await fetch("http://127.0.0.1:8000/create_user/", {
                       method: "POST",
@@ -58,14 +57,10 @@
                       },
                       body: JSON.stringify({login, password})
                 });
-                 const data = await response.json();
-                 if (data.status === 200) {
-                 console.log('here')
-                     window.location.assign("/");
-                 }
+                window.location.assign("/");
             }
             catch (e) {
-               document.querySelector('p').appendChild(document.createTextNode("Nie ma takiego użytkownika"))
+               document.querySelector('p').appendChild(document.createTextNode("Login zajęty!"))
             }
         })
     </script>

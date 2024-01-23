@@ -1,4 +1,4 @@
-from facenet_pytorch import MTCNN, InceptionResnetV1, fixed_image_standardization, training
+from facenet_pytorch import MTCNN, fixed_image_standardization, training
 import torch
 from torch.utils.data import DataLoader, SubsetRandomSampler
 from torch import optim
@@ -7,10 +7,12 @@ from torch.utils.tensorboard import SummaryWriter
 from torchvision import datasets, transforms
 import numpy as np
 
-data_dir = '../static/dataset'
+from training_model.network import InceptionResnetV1
+
+data_dir = 'static/dataset'
 
 batch_size = 24
-epochs = 24
+epochs = 16
 workers = 24
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -111,5 +113,5 @@ for epoch in range(epochs):
         writer=writer
     )
 
-torch.save(resnet.state_dict(), '../models/own_data.pth')
+torch.save(resnet.state_dict(), 'models/own_data.pth')
 writer.close()

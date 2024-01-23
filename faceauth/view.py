@@ -22,8 +22,8 @@ import pathlib
 
 mtcnn = MTCNN(image_size=160, margin=20)
 resnet = InceptionResnetV1(
-    pretrained=os.path.join(pathlib.Path(__file__).parent.parent.resolve(), 'models', 'previously_trained_vggface2.pth')
-)
+    pretrained=os.path.join(pathlib.Path(__file__).parent.parent.resolve(), 'models', 'own_data.pth')
+).eval()
 
 
 class LoginVideoView(View):

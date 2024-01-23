@@ -35,7 +35,6 @@
         const csrftoken = Object.fromEntries(
             document.cookie.split(';').map((cookie) => cookie.split("="))
         )["csrftoken"]
-        console.log(csrftoken)
 
         startbutton.addEventListener('click', startup);
         retrybutton.addEventListener('click', startup);
