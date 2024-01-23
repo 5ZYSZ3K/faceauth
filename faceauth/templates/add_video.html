@@ -22,7 +22,7 @@
     </div>
     <script>
         {% if not user.is_authenticated %}
-        navigation.navigate("/login/");
+        window.location.assign("/login/");
         {% endif %}
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');

@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +23,7 @@
         <button id="startbutton">Start recording</button>
         <button id="capture">Capture</button>
         <canvas id="canvas"> </canvas>
+        <video id="video"> </video>
       </div>
       <div class="output" style="display: none;">
         <img id="photo" src=" " alt="The screen capture will appear in this box." />
@@ -60,7 +60,6 @@
                 video.srcObject = stream;
                 video.play();
                 capturebutton.style.display = 'inline-block';
-                exitbutton.style.display = 'inline-block';
               })
               .catch((err) => {
                 console.error(`An error occurred: ${err}`);
@@ -83,7 +82,7 @@
                     body: formData
                 })
                 if (response.status === 200) {
-                    navigation.navigate("/");
+                    window.location.assign("/");
                 }
             })
 

@@ -1,7 +1,6 @@
 import io
 import json
 
-import torch
 from PIL import Image
 from django.contrib.auth import authenticate, login
 from django.core.files import File
@@ -11,19 +10,20 @@ from django.views import View
 import uuid
 
 from django.views.decorators.csrf import csrf_exempt
-from facenet_pytorch.models.inception_resnet_v1 import InceptionResnetV1
 from facenet_pytorch.models.mtcnn import MTCNN
 from pgvector.django import L2Distance
 from rest_framework.authtoken.admin import User
 from rest_framework.permissions import IsAuthenticated
 
 from faceauth.models import FacePhoto
-
+from training_model.network import InceptionResnetV1
+import os
+import pathlib
 
 mtcnn = MTCNN(image_size=160, margin=20)
-resnet = InceptionResnetV1(pretrained='vggface2').eval()
-
-torch.save(resnet.state_dict(), "./model")
+resnet = InceptionResnetV1(
+    pretrained=os.path.join(pathlib.Path(__file__).parent.parent.resolve(), 'models', 'own_data.pth')
+).eval()
 
 
 class LoginVideoView(View):
@@ -86,6 +86,7 @@ class CreateUserView(View):
         except:
             return HttpResponse('Unauthorized - login already exists', status=401)
 
+    @csrf_exempt
     def get(self, request):
         return render(request, "create_user.html")
 

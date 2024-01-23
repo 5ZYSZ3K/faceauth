@@ -1,9 +1,11 @@
 Django==4.2.7
 psycopg2==2.9.9
-pgvector
-Pillow
-djangorestframework
-torch
+pgvector~=0.2.4
+Pillow~=10.1.0
+djangorestframework~=3.14.0
+torch~=2.1.2
 torchvision
 numpy
 facenet-pytorch
+tqdm
+whitenoise
